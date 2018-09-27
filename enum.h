@@ -492,6 +492,9 @@ struct _initialize_at_program_start {
     _initialize_at_program_start() { Enum::initialize(); }
 };
 
+template <typename T>
+struct parent_class {};
+
 } // namespace better_enums
 
 
@@ -922,7 +925,16 @@ operator >>(std::basic_istream<Char, Traits>& stream, Enum &value)             \
         stream.setstate(std::basic_istream<Char, Traits>::failbit);            \
                                                                                \
     return stream;                                                             \
-}
+}                                                                              \
+                                                                               \
+namespace better_enums {                                                       \
+template <>                                                                    \
+struct parent_class<Enum::Enumerated>                                          \
+{                                                                              \
+    typedef Enum type;                                                         \
+};                                                                             \
+}                                                                              \
+
 
 
 
