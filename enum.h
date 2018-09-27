@@ -263,6 +263,7 @@
 #endif // #ifdef BETTER_ENUMS_MACRO_FILE else case
 
 
+#define BETTER_ENUMS_ENUM_NAME _enumerated
 
 namespace better_enums {
 
@@ -272,7 +273,7 @@ namespace better_enums {
 template <typename T>
 BETTER_ENUMS_CONSTEXPR_ inline T _default()
 {
-    return static_cast<typename T::_enumerated>(0);
+    return static_cast<typename T::BETTER_ENUMS_ENUM_NAME>(0);
 }
 
 template <>
@@ -586,7 +587,7 @@ constexpr const char    *_final_ ## index =                                    \
 #define BETTER_ENUMS_TYPE(SetUnderlyingType, SwitchType, GenerateSwitchType,   \
                           GenerateStrings, ToStringConstexpr,                  \
                           DeclareInitialize, DefineInitialize, CallInitialize, \
-                          Enum, Underlying, ...)                               \
+                          Enum, Underlying, Enumerated, ...)                   \
                                                                                \
 namespace better_enums_data_ ## Enum {                                         \
                                                                                \
@@ -602,9 +603,9 @@ class Enum {                                                                   \
   public:                                                                      \
     typedef Underlying                                      _integral;         \
                                                                                \
-    enum _enumerated SetUnderlyingType(Underlying) { __VA_ARGS__ };            \
+    enum Enumerated SetUnderlyingType(Underlying) { __VA_ARGS__ };             \
                                                                                \
-    BETTER_ENUMS_CONSTEXPR_ Enum(_enumerated value) : _value(value) { }        \
+    BETTER_ENUMS_CONSTEXPR_ Enum(Enumerated value) : _value(value) { }         \
                                                                                \
     BETTER_ENUMS_COPY_CONSTRUCTOR(Enum)                                        \
                                                                                \
@@ -699,7 +700,7 @@ BETTER_ENUMS_ID(GenerateStrings(Enum, __VA_ARGS__))                            \
                                                                                \
 BETTER_ENUMS_UNUSED BETTER_ENUMS_CONSTEXPR_                                    \
 inline const Enum                                                              \
-operator +(Enum::_enumerated enumerated)                                       \
+operator +(Enum::Enumerated enumerated)                                        \
 {                                                                              \
     return static_cast<Enum>(enumerated);                                      \
 }                                                                              \
@@ -775,7 +776,7 @@ BETTER_ENUMS_CONSTEXPR_ inline Enum Enum::_from_index(std::size_t index)       \
 BETTER_ENUMS_CONSTEXPR_ inline Enum                                            \
 Enum::_from_integral_unchecked(_integral value)                                \
 {                                                                              \
-    return static_cast<_enumerated>(value);                                    \
+    return static_cast<Enumerated>(value);                                     \
 }                                                                              \
                                                                                \
 BETTER_ENUMS_CONSTEXPR_ inline Enum::_optional                                 \
@@ -944,7 +945,7 @@ operator >>(std::basic_istream<Char, Traits>& stream, Enum &value)             \
 
 // C++98, C++11
 #define BETTER_ENUMS_REGULAR_ENUM_SWITCH_TYPE(Type)                            \
-    _enumerated
+    BETTER_ENUMS_ENUM_NAME
 
 // C++11
 #define BETTER_ENUMS_ENUM_CLASS_SWITCH_TYPE(Type)                              \
@@ -1140,7 +1141,7 @@ operator >>(std::basic_istream<Char, Traits>& stream, Enum &value)             \
         BETTER_ENUMS_DEFAULT_DECLARE_INITIALIZE,                               \
         BETTER_ENUMS_DEFAULT_DEFINE_INITIALIZE,                                \
         BETTER_ENUMS_DEFAULT_CALL_INITIALIZE,                                  \
-        Enum, Underlying, __VA_ARGS__))
+        Enum, Underlying, BETTER_ENUMS_ENUM_NAME, __VA_ARGS__))
 
 #define SLOW_ENUM(Enum, Underlying, ...)                                       \
     BETTER_ENUMS_ID(BETTER_ENUMS_TYPE(                                         \
@@ -1152,7 +1153,7 @@ operator >>(std::basic_istream<Char, Traits>& stream, Enum &value)             \
         BETTER_ENUMS_DECLARE_EMPTY_INITIALIZE,                                 \
         BETTER_ENUMS_DO_NOT_DEFINE_INITIALIZE,                                 \
         BETTER_ENUMS_DO_NOT_CALL_INITIALIZE,                                   \
-        Enum, Underlying, __VA_ARGS__))
+        Enum, Underlying, BETTER_ENUMS_ENUM_NAME, __VA_ARGS__))
 
 #else
 
@@ -1166,7 +1167,7 @@ operator >>(std::basic_istream<Char, Traits>& stream, Enum &value)             \
         BETTER_ENUMS_DO_DECLARE_INITIALIZE,                                    \
         BETTER_ENUMS_DO_DEFINE_INITIALIZE,                                     \
         BETTER_ENUMS_DO_CALL_INITIALIZE,                                       \
-        Enum, Underlying, __VA_ARGS__))
+        Enum, Underlying, BETTER_ENUMS_ENUM_NAME, __VA_ARGS__))
 
 #endif
 
