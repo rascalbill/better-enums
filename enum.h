@@ -263,7 +263,7 @@
 #endif // #ifdef BETTER_ENUMS_MACRO_FILE else case
 
 
-#define BETTER_ENUMS_ENUM_NAME _enumerated
+#define BETTER_ENUMS_ENUM_NAME Enum
 
 namespace better_enums {
 
